@@ -1,0 +1,46 @@
+{
+    "name": "bravegeek/allrival-sdk",
+    "description": "An SDK designed for easy usage of the allrival.com website's API",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "allrival",
+        "parsing",
+        "web scraping",
+        "products matching",
+        "sdk",
+        "php"
+    ],
+    "support": {
+        "email": "feedback@allrival.com",
+        "docs": "https://allrival.com/docs-api",
+        "issues": "https://github.com/BraveGeek3/allrival-sdk/issues"
+    },
+    "homepage": "https://github.com/BraveGeek3/allrival-sdk",
+    "authors": [
+        {
+            "name": "Andrei Kvashnin",
+            "email": "andrei.kvashnin2000@gmail.com",
+            "role": "Developer, maintainer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "AllrivalSDK\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AllrivalSDK\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "symfony/dotenv": "^6.2"
+    }
+}
