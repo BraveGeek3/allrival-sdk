@@ -5,8 +5,8 @@ namespace AllrivalSDK\Filters\FilterTypes;
 use AllrivalSDK\Filters\BaseFilter;
 
 /**
- * Фильтр для строковых значений
- * Позволяет указать принадлежность или сравнить строковые значения
+ * Фильтр для строковых значений.
+ * Позволяет указать принадлежит ли одна строка другой или сравнить их
  */
 abstract class MembershipFilter extends BaseFilter
 {
