@@ -188,4 +188,137 @@ $this->reportManager->resetFilters();
 8) TimePeriodFilter - Фильтр для работы с датой и временем
 
 ## Примеры
-Примеры использования находятся в папке ./tests
+<ul>
+<li>
+Получение ваших товаров на основе фильтров
+
+```
+// $apiKey - API ключ из личного кабинета Allrival
+$apiKey = ...;
+
+// Создаем клиент
+$client = new Client($apiKey);
+
+// Создаем массив нужных фильтров
+$filters = [
+    new PriceFilter(50, PriceFilter::GREATER_THAN),
+    new NameFilter('Товар', NameFilter::CONTAINS),
+    new SimilarProductPriceFilter(50, SimilarProductPriceFilter::GREATER_THAN),
+    new WithBestPriceFilter(WithBestPriceFilter::YES),
+    new RivalsCompanyFilter(111),
+];
+
+// Добавляем фильтры в клиент для последующих запросов
+$client->setFilters(...$filters);
+
+
+/**
+ * Получаем выгрузку ваших продуктов с фильтрами
+ *
+ * @var $report ReportType
+ */
+$report = $this->reportManager->getYourProducts();
+
+// Массив с вашими продуктами
+$products = $report->getItems();
+
+// Информация о пагинации
+$pagination = $report->getPagination();
+
+// Количество ваших продуктов на странице
+$itemsCount = $pagination->getItemsCount();
+
+// Общее количество ваших продуктов
+$itemsTotalCount = $pagination->getItemsTotalCount();
+
+// Общее количество страниц
+$pagesCount = $pagination->getPagesCount();
+
+// Делаем что-нибудь с продуктами
+// ...
+```
+</li>
+<li>
+Добавление и удаление товаров
+
+```
+// $apiKey - API ключ из личного кабинета Allrival
+$apiKey = ...;
+
+// Создаем клиент
+$client = new Client($apiKey);
+
+// Ссылка на товар
+$createdProductUrl = ...;
+
+// Получаем добавленный продукт в виде ProductType
+$createdProduct = $this->productManager->addProduct($createdProductUrl);
+
+// Делаем что-то с добавленным товаром
+...
+....
+.....
+
+// URL удаляемого товара
+$deletedProductUrl = ...;
+
+// Информация об удалении товара (true/false)
+$isDeleted = $this->productManager->deleteProduct($deletedProductUrl);
+```
+</li>
+<li>
+Получение истории цен
+
+```
+// Id продукта, у которого хотим получить историю цен
+$productId = ...;
+
+/**
+ * @var PriceHistoryType $priceHistory
+ */
+$priceHistory = $this->priceHistoryManager->getPriceHistory($productId);
+
+// Может быть UNIX-time, строкой или DateTime
+$date = ...;
+
+// Получаем цену в указанный момент времени
+$price = $priceHistory->getByDate($date);
+
+// Возвращает массив с историей цен
+$priceHistoryArray = $priceHistory->getHistory();
+```
+</li>
+<li>
+Создание и удаление сопоставлений
+
+```
+// Id продукта из вашей компании
+$yourProductIdForCreatedMatch = ...;
+
+// Id продукта из компании конкурента
+$rivalProductIdForCreatedMatch = ...;
+
+/**
+ * @var ClusterType $createdMatching
+ */
+$createdMatching = $this->clusterManager->createMatching($yourProductIdForCreatedMatch, $rivalProductIdForCreatedMatch);
+
+...
+....
+.....
+
+// Id продукта из вашей компании
+$yourProductIdForDeletedMatch = ...;
+
+// Id продукта из компании конкурента
+$rivalProductIdForDeletedMatch = ...;
+
+/**
+ * @var ClusterType $deletedMatching
+ */
+$deletedMatching = $this->clusterManager->deleteMatching($yourProductIdForDeletedMatch, $rivalProductIdForDeletedMatch);
+```
+</li>
+</ul>
+
+Больше примеров использования находятся в папке ./tests
