@@ -29,9 +29,23 @@ composer require bravegeek/allrival-sdk
 <ul>
 <li>addProduct<br>
 Принимает Url товара, который вы хотите сохранить. Возвращает информацию о сохраненном товаре<br>
+Примеры:
+
+```
+// URL товара
+$productUrl = 'https://www.wildberries.ru/catalog/46369147/detail.aspx';
+
+// Возвращает ProductType / array
+$createdProduct = $this->productManager->addProduct($productUrl);
+```
 </li>
 <li>deleteProduct<br>
 Принимает Url товара, который вы хотите удалить. Возвращает булево значение о результате удаления (true/false)<br>
+
+```
+// Возвращает true / false
+$result = $this->productManager->deleteProduct($productUrl);
+```
 </li>
 </ul>
 
@@ -40,9 +54,22 @@ composer require bravegeek/allrival-sdk
 <ul>
 <li>getYourCompanyInfo <br>
 Возвращает информацию о вашей компании и её конкурентах <br>
+Примеры:
+
+```
+// Возвращает CompanyType / array
+$result = $this->companyManager->getYourCompanyInfo();
+```
 </li>
 <li>removeProductsByCompanyId <br>
 Удаляет компанию вместе с продуктами по её ID <br>
+
+```
+$id = ...; // Id вашей компании
+
+// Возвращает true / false
+$result = $this->companyManager->removeProductsByCompanyId($id)
+```
 </li>
 </ul>
 
@@ -53,46 +80,105 @@ composer require bravegeek/allrival-sdk
 <li>createMatching <br>
 Принимает параметры ID продукта вашей компании и ID продукта компании конкурента. <br>
 В случае успеха, возвращает о созданном сопоставлении.<br>
+
+```
+$yourProductId = ...; // Id продукта вашей компании
+$rivalProductId = ...; // Id продукта компании конкурента
+
+// Возвращает ClusterType / array
+$createdMatching = $this->clusterManager->createMatching($yourProductId, $rivalProductId);
+```
 </li>
 <li>deleteMatching <br>
 Принимает параметры ID продукта вашей компании и ID продукта компании конкурента.<br>
 В случае успеха, возвращает об удаленном сопоставлении.<br>
+
+```
+$yourProductId = ...; // Id продукта вашей компании
+$rivalProductId = ...; // Id продукта компании конкурента
+
+// Возвращает ClusterType / array
+$deletedMatching = $this->clusterManager->deleteMatching($yourProductId, $rivalProductId);
+```
 </li>
 </ul>
-
 4) Report Manager - отвечает за выгрузку. Принимает фильтры, которые будут использованы при выборке. <br>
 Методы:
 <ul>
 <li>getYourProducts <br>
 Принимает произвольное количество фильтров и возвращает выгрузку ваших продуктов на основе фильтров.
+
+```
+// $filters - массив фильтров для выгрузки
+// Возвращает ReportType содержащий массив продуктов и информацию о пагинации
+$result = $this->reportManager->getYourProducts(...$filters);
+```
 </li>
 <li>getRivalProducts <br>
 Принимает произвольное количество фильтров и возвращает выгрузку продуктов конкурентов на основе фильтров.
+
+```
+// $filters - массив фильтров для выгрузки
+// Возвращает ReportType содержащий массив продуктов и информацию о пагинации
+$result = $this->reportManager->getRivalProducts(...$filters);
+```
 </li>
 <li>getSimilars <br>
 Принимает произвольное количество фильтров и возвращает выгрузку сопоставлений ваших товаров с товарами конкурентов на основе фильтров.
+
+```
+// $filters - массив фильтров для выгрузки
+// Возвращает ReportType содержащий массив ваших товаров и массив совпавших товаров конкурентов и информацию о пагинации
+$result = $this->reportManager->getSimilars(...$filters);
+```
 </li>
 <li>setFilters <br>
 Сохраняет переданные фильтры для использования в последующих запросах
+
+```
+// $filters - массив фильтров для выгрузки
+$this->reportManager->setFilters(...$filters);
+```
 </li>
 <li>addFilter <br>
 Добавляет переданный фильтр к массиву уже сохраненных фильтров
+
+```
+// $filter - фильтр для выгрузки
+$this->reportManager->setFilters($filter);
+```
 </li>
 <li>removeFilter <br>
 Удаляет переданный фильтр из массива уже сохраненных фильтров по его названию
+
+```
+// $filter - фильтр для выгрузки
+// Может быть как строкой так и FilterInterface
+$this->reportManager->removeFilter($filter);
+```
 </li>
 <li>replaceFilter <br>
 Заменяет существующий сохраненный фильтр переданным
+
+```
+// $filter - фильтр для выгрузки (FilterInterface)
+$this->reportManager->replaceFilter($filter);
+```
 </li>
 <li>resetFilters <br>
-Очищает сохраненные фильтры
+Очищает сохраненные фильтры, добавленные через setFilters()
+
+```
+$this->reportManager->resetFilters();
+```
 </li>
 </ul>
 
 
 ## Фильтры
+Каждый фильтр наследуется от соответствующего типа фильтра. 
 Существует 8 видов фильтров:
-1) BooleanFilter - Фильтр для булевый типов фильтров (где есть выбор да/нет)
+1) BooleanFilter - Фильтр для булевых типов фильтров (где есть выбор да/нет)
 2) EmptyTypeFilter - Без указания типа фильтра, принимает только явные значения
 3) EmptyTypeMultipleValuesFilter - Для фильтров с выбором нескольких значений (тэги, города, категории и т.д.) и без типа фильтра
 4) InequalityFilter - Фильтр для сравнения числовых значений
